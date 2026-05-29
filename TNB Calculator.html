@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TNB Electricity Bill Calculator</title>
+    <style>
+        body {
+            background: linear-gradient(-45deg, #0100ff 10%, #0fffff 90%) fixed;
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+        }
+        
+        .main-wrapper {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            max-width: 700px;
+            width: 100%;
+        }
+
+        h2 { text-align: center; color: #2c3e50; }
+
+        .grid-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        .input-group label { display: block; font-size: 0.9rem; margin-bottom: 4px; color: #555; }
+        
+        /* Remove spinner arrows */
+        input[type=number] { 
+            width: 100%; padding: 10px; border: 1px solid #ddd; 
+            border-radius: 8px; box-sizing: border-box; 
+            -moz-appearance: textfield; 
+        }
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+
+        button { 
+            background: #16a085; color: white; padding: 15px; border: none; 
+            border-radius: 10px; cursor: pointer; width: 100%; font-size: 1.2rem; font-weight: bold;
+        }
+
+        #results { margin-top: 20px; padding: 20px; background: #e0f2f1; border-radius: 15px; }
+        .result-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        .result-table td { padding: 8px 0; }
+        .text-right { text-align: right; }
+        .nem-credit { color: red; font-weight: bold; }
+        .tooltip {
+    position: fixed;
+    background: #6cf;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    display: none; /* Hidden by default */
+    pointer-events: none; /* Mouse ignores the tooltip */
+    z-index: 1000;
+}
+
+        @media (max-width: 600px) { .grid-inputs { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+	<div id="custom-tooltip" class="tooltip">Tool tip text here!</div>
+    <div class="main-wrapper">
+        <h2>TNB Monthly Electricity Bill Calculator</h2>
+        
+        <div class="grid-inputs">
+            <div class="input-group"><label>Total Usage (kWh)</label><input type="number" id="totalUsage" value="1398"></div>
+            <div class="input-group"><label>Solar Generation (kWh)</label><input type="number" id="totalGen" value="526"></div>
+            <div class="input-group"><label>Electricity Tariff (RM/kWh)</label><input type="number" id="rateTariff1" value="0.2703" step="0.0001"></div>
+            <div class="input-group"><label data-tooltip="AFA (Automatic Fuel Adjustment) is reviewed and announced monthly by the Energy Commission (Suruhanjaya Tenaga)"> *AFA (RM/kWh)</label><input type="number" id="rateAFA" value="-0.0215" step="0.0001"></div>
+            <div class="input-group"><label>Capacity Charge (RM/kWh)</label><input type="number" id="rateCapacity" value="0.0455" step="0.0001"></div>
+            <div class="input-group"><label>Network Charge (RM/kWh)</label><input type="number" id="rateNetwork" value="0.1285" step="0.0001"></div>
+            <div class="input-group"><label>Retail Fixed Rate (RM)</label><input type="number" id="rateRetail" value="10.00" step="0.01"></div>
+            <div class="input-group"><label>NEM Adjustment (RM)</label><input type="number" id="adjustment" value="0" step="0.01"></div>
+        </div>
+        
+        <button onclick="calculateBill()">Calculate Final Bill</button>
+
+        <div id="results" style="display:none;">
+            <h3>Bill Summary</h3>
+            <table class="result-table">
+                <tr><td>0-600 kWh (No ST):</td><td class="text-right">RM <span id="resNoST"></span></td></tr>
+                <tr><td>&gt;600 kWh (With ST):</td><td class="text-right">RM <span id="resST"></span></td></tr>
+                <tr><td>Service Tax (8% on &gt;600):</td><td class="text-right">RM <span id="resTax"></span></td></tr>
+                <tr><td>KWTBB (1.6%):</td><td class="text-right">RM <span id="resKWTBB"></span></td></tr>
+                <tr style="border-top: 2px solid #333;"><td><strong>Current Total:</strong></td><td class="text-right"><strong>RM <span id="resCurrent"></span></strong></td></tr>
+                <tr><td>Credit NEM:</td><td class="text-right nem-credit">(RM <span id="resNEM"></span>)</td></tr>
+                <tr style="font-size: 1.2em; color: #11AA55;"><td><strong>Final Bill:</strong></td><td class="text-right"><strong>RM <span id="resFinal"></span></strong></td></tr>
+            </table> 
+        </div>
+    </div>
+
+    <script>
+	    
+	        const tooltip = document.getElementById('custom-tooltip');
+
+document.addEventListener('mousemove', (e) => {
+    // Check if the mouse is over an element that should have a tooltip
+    // For example, any element with a 'data-tooltip' attribute
+    if (e.target.hasAttribute('data-tooltip')) {
+        tooltip.style.display = 'block';
+        tooltip.textContent = e.target.getAttribute('data-tooltip');
+        
+        // Offset slightly from the mouse cursor
+        tooltip.style.left = (e.clientX + 15) + 'px';
+        tooltip.style.top = (e.clientY + 15) + 'px';
+    } else {
+        tooltip.style.display = 'none';
+    }
+});
+        function calculateBill() {
+    // Inputs
+    const usage = parseFloat(document.getElementById('totalUsage').value);
+    const gen = parseFloat(document.getElementById('totalGen').value);
+    const afa = parseFloat(document.getElementById('rateAFA').value);
+    const cap = parseFloat(document.getElementById('rateCapacity').value);
+    const net = parseFloat(document.getElementById('rateNetwork').value);
+    const retail = parseFloat(document.getElementById('rateRetail').value);
+    const adj = parseFloat(document.getElementById('adjustment').value);
+
+    // Dynamic Tariff Selection
+    const tariff = (usage <= 1500) ? 0.2703 : 0.3703;
+    const baseRate = tariff + afa + cap + net;
+    
+    // Tiered Logic
+    let tier1Usage = Math.min(usage, 600);
+    let tier2Usage = Math.max(0, usage - 600);
+    
+    let subTotalNoST = tier1Usage * baseRate;
+    let subTotalST = (tier2Usage * baseRate) + (tier2Usage > 0 ? retail : 0);
+
+    const st = subTotalST * 0.08;
+    // KWTBB applied to the base rate components (excluding retail)
+    const kwtbb = (usage * (tariff + cap + net)) * 0.016;
+    
+    const currentTotal = subTotalNoST + subTotalST + st + kwtbb;
+    const creditNEM = (gen * (tariff + cap + net)) + adj;
+    
+    const finalBill = currentTotal - creditNEM;
+
+
+    // Output
+    document.getElementById('resNoST').innerText = subTotalNoST.toFixed(2);
+    document.getElementById('resST').innerText = subTotalST.toFixed(2);
+    document.getElementById('resTax').innerText = st.toFixed(2);
+    document.getElementById('resKWTBB').innerText = kwtbb.toFixed(2);
+    document.getElementById('resNEM').innerText = creditNEM.toFixed(2);
+    document.getElementById('resCurrent').innerText = currentTotal.toFixed(2);
+    document.getElementById('resFinal').innerText = Math.max(0, finalBill).toFixed(2);
+    
+    document.getElementById('results').style.display = 'block';
+}
+    </script>
+</body>
+</html>

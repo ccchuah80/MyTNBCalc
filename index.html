@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TNB Electricity Bill Calculator</title>
     <style>
         body {
@@ -35,7 +36,10 @@
             border-radius: 8px; box-sizing: border-box; 
             -moz-appearance: textfield; 
         }
-        input[type=number]::-webkit-inner-spin-button, 
+        input, select, textarea {
+    font-size: 16px;
+}
+		input[type=number]::-webkit-inner-spin-button, 
         input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 
         button { 
@@ -59,8 +63,24 @@
     pointer-events: none; /* Mouse ignores the tooltip */
     z-index: 1000;
 }
-
-        @media (max-width: 600px) { .grid-inputs { grid-template-columns: 1fr; } }
+	@media (max-width: 600px) {
+		.grid-inputs {
+			grid-template-columns: 1fr; /* Force single column on mobile */
+		}
+		
+		.main-wrapper {
+			padding: 15px; /* Reduce padding for smaller screens */
+			border-radius: 0; /* Remove rounded corners for full-width look */
+		}
+		
+		button {
+			font-size: 1.2rem; /* Make button text slightly smaller to fit */
+			padding: 12px;
+		}
+		
+		h2 { font-size: 1.5rem; }
+	}
+        }
     </style>
 </head>
 <body>

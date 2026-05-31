@@ -5,70 +5,95 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TNB Electricity Bill Calculator</title>
     <style>
-        body {
-            background: linear-gradient(-45deg, #0100ff 10%, #0fffff 90%) fixed;
-            min-height: 100vh;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 10px;
-            font-family: 'Segoe UI', Tahoma, sans-serif;
-        }
-        
-        .main-wrapper {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            max-width: 680px;
-            width: 100%;
-        }
+		body {
+			background: linear-gradient(-45deg, #0100ff 10%, #0fffff 90%) fixed;
+			min-height: 100vh;
+			margin: 0;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			padding: 10px;
+			font-family: 'Segoe UI', Tahoma, sans-serif;
+			display: flex;
+			flex-direction: column;
+			min-height: 100vh;
+    		}
+		
+		.main-wrapper {
+			background: rgba(255, 255, 255, 0.95);
+			padding: 20px;
+			border-radius: 10px;
+			box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+			max-width: 680px;
+			width: 100%;
+		}
 
-        h2 { text-align: center; color: #2c3e50; }
+		h2 { text-align: center; color: #2c3e50; }
 
-        .grid-inputs { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 8px; }
-        .input-group label { display: block; font-size: 0.8rem; margin-bottom: 4px; color: #555; }
-        
-        /* Remove spinner arrows */
-        input[type=number], select { 
-            width: 100%; padding: 3px; border: 1px solid #ddd; 
-            border-radius: 8px; box-sizing: border-box; 
-            -moz-appearance: textfield; 
-        }
-        input, select, textarea {
-    font-size: 14px;
-}
+		.grid-inputs { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 8px; }
+		.input-group label { display: block; font-size: 0.8rem; margin-bottom: 4px; color: #555; }
+		
+		/* Remove spinner arrows */
+		input[type=number], select { 
+			width: 100%; padding: 8px; border: 1px solid #ddd; 
+			border-radius: 8px; box-sizing: border-box; 
+			-moz-appearance: textfield; 
+		}
+		input, select, textarea {
+		font-size: 14px;
+		}
 		input[type=number]::-webkit-inner-spin-button, 
-        input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+		input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 
-        .settings-panel { margin-bottom: 20px; }
-        .collapsible { background: #ccc; cursor: pointer; padding: 10px; width: 100%; border: none; text-align: left; border-radius: 10px; font-weight: bold; }
-        .content { display: none; padding: 10px; border: 1px solid #ddd; border-top: none; }
+		.settings-panel { margin-bottom: 10px; background: #99ccff;}
+		
+		
+		.collapsible { background: #ff0066; cursor: pointer; padding: 10px; width: 100%; border: none; text-center: left; border-radius: 10px; font-weight: bold; }
+		.collapsible:hover {
+		background: #660033; /* Optional: adds a nice hover effect */
+		}
+		.Calcbtn:hover {
+		background: #006600; /* Optional: adds a nice hover effect */
+		}		.content { display: none; padding: 10px; border: 1px solid #ddd; border-top: none; }
 
-        button { 
-            background: #16a085; color: white; padding: 15px; border: none; 
-            border-radius: 10px; cursor: pointer; width: 100%; font-size: 1.2rem; font-weight: bold;
-        }
-
-        #results { margin-top: 10px; padding: 10px; background: #e0f2f1; border-radius: 15px; }
-        .result-table { width: 100%; border-collapse: collapse; margin-top: 8px; }
-        .result-table td { padding: 6px 0; }
-        .text-right { text-align: right; }
-        .rate-display { font-style: italic; font-size: 0.75rem; color: #666; margin-top: 12px; border-top: 1px solid #ccc; padding-top: 5px; }
-        .nem-credit { color: red; font-weight: bold; }
-        .tooltip {
-    position: fixed;
-    background: #6cf;
-    color: #fff;
-    padding: 5px 10px;
-    border-radius: 4px;
-    font-size: 12px;
-    display: none; /* Hidden by default */
-    pointer-events: none; /* Mouse ignores the tooltip */
-    z-index: 1000;
-}
-	@media (max-width: 600px) {
+		button { 
+			background: #00cc00; color: white; padding: 15px; border: none; 
+			border-radius: 10px; cursor: pointer; width: 100%; font-size: 1.4rem; font-weight: bold;
+		}
+		#results { margin-top: 10px; margin-bottom: 10px; padding: 10px; background: #e0f2f1; border-radius: 15px; }
+		.result-table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+		.result-table td { padding: 6px 0; }
+		.text-right { text-align: right; }
+		.rate-display { font-style: italic; font-size: 0.75rem; color: #666; margin-top: 12px; border-top: 1px solid #ccc; padding-top: 5px; }
+		.nem-credit { color: red; font-weight: bold; }
+		.tooltip {
+		position: fixed;
+		background: #6cf;
+		color: #fff;
+		padding: 5px 10px;
+		border-radius: 4px;
+		font-size: 12px;
+		display: none; /* Hidden by default */
+		pointer-events: none; /* Mouse ignores the tooltip */
+		z-index: 1000;
+		}
+		
+		.reset-btn {
+		background: #ffff99; 
+		color: red;
+		font-size: 0.9rem; 
+		padding: 8px 15px; /* Smaller padding */
+		border: none; 
+		border-radius: 8px; 
+		cursor: pointer; 
+		width: auto; /* Button only as wide as the text */
+		display: inline-block; /* Helps with centering */
+		}	
+		.reset-btn:hover {
+		background: #ff9900; /* Optional: adds a nice hover effect */
+		}
+		
+		@media (max-width: 600px) {
 		.grid-inputs {
 			grid-template-columns: 1fr 1fr; /* Force 2 column on mobile */
 		}
@@ -84,19 +109,19 @@
 		}
 		
 		h2 { font-size: 1.5rem; }
-	}
-        }
-    </style>
+		}
+	</style>
 </head>
+
 <body>
 	<div id="custom-tooltip" class="tooltip">Tool tip text here!</div>
 	<div class="main-wrapper">
 		<h2>myTNB Electricity Bill Calculator</h2>
 		<div class="grid-inputs">
 			<div class="input-group"><label>Total Usage (kWh)</label><input type="number" id="totalUsage" value="1398"></div>
-            <div class="input-group"><label>Solar Generation (kWh)</label><input type="number" id="totalGen" value="526"></div>
-            <div class="input-group"><label data-tooltip="AFA (Automatic Fuel Adjustment) is reviewed and announced monthly by the Energy Commission (Suruhanjaya Tenaga)"> *AFA (RM/kWh)</label>
-				<select id="rateAFA">
+			<div class="input-group"><label>Solar Generation (kWh)</label><input type="number" id="totalGen" value="526"></div>
+			<div class="input-group"><label data-tooltip="AFA (Automatic Fuel Adjustment) is reviewed and announced monthly by the Energy Commission (Suruhanjaya Tenaga)"> *AFA (RM/kWh)</label>
+				<select id="rateAFA" style="border-radius: 10px; height: 38px;">
 					<option value="-0.0145">August 2025 (-0.0145)</option>
 					<option value="-0.0110">September 2025 (-0.0110)</option>
 					<option value="-0.0650">October 2025 (-0.0650)</option>
@@ -113,20 +138,7 @@
 				</select>
 			</div>
 		</div>
-		
-        <div class="settings-panel">
-            <button class="collapsible" onclick="toggleSettings()">⚙️ Advanced Settings (Rates)</button>
-            <div id="settingsContent" class="content">
-                <div class="grid-inputs" style="grid-template-columns: 1fr 1fr;">
-                    <div class="input-group"><label>Capacity Charge (RM/kWh)</label><input type="number" id="rateCapacity" value="0.0455"></div>
-                    <div class="input-group"><label>Network Charge (RM/kWh)</label><input type="number" id="rateNetwork" value="0.1285"></div>
-                    <div class="input-group"><label>Retail Fixed Rate (RM)</label><input type="number" id="rateRetail" value="10.00"></div>
-                </div>
-            </div>
-        </div>
-
-		<button onclick="calculateBill()">Calculate Final Bill</button>
-
+		<button class="Calcbtn" onclick="calculateBill()">Calculate Final Bill</button>
 		<div id="results" style="display:none;">
 			<h3>Bill Summary</h3>
 			<table class="result-table">
@@ -140,70 +152,130 @@
 			</table>
 			<div id="appliedRates" class="rate-display"></div>
 		</div>
-	</div>
+		
+		<div class="settings-panel">
+			<button id="toggleBtn" class="collapsible" style="font-size: 1em" onclick="toggleSettings()">⚙️ Advanced Setting (Rates Adjustment)</button>
+			<div id="settingsContent" class="content">
+				<div class="grid-inputs" style="grid-template-columns: 1fr 1fr;">
+					<div class="input-group"><label>Override Tariff (RM/kWh)</label><input type="number" id="manualTariff" placeholder="Leave empty for default"></div>
+					<div class="input-group"><label>Override AFA (RM/kWh)</label><input type="number" id="manualAFA" placeholder="Leave empty for default"></div>
+					<div class="input-group"><label>Capacity Charge (RM/kWh)</label><input type="number" id="rateCapacity" value="0.0455"></div>
+					<div class="input-group"><label>Network Charge (RM/kWh)</label><input type="number" id="rateNetwork" value="0.1285"></div>
+					<div class="input-group"><label>Retail Fixed Rate (RM)</label><input type="number" id="rateRetail" value="10.00"></div>
+				</div>
+				<div style="text-align: center; margin-top: 10px;">
+    <button onclick="resetSettings()" class="reset-btn">Reset to Defaults</button>
+</div>
+			</div>
+		</div>
+    </div>
 
 	<script>		
-	function toggleSettings() {
-		const content = document.getElementById("settingsContent");
-		content.style.display = (content.style.display === "block") ? "none" : "block";
-	}
-	const tooltip = document.getElementById('custom-tooltip');
-	document.addEventListener('mousemove', (e) => {
-    // Check if the mouse is over an element that should have a tooltip
-    // For example, any element with a 'data-tooltip' attribute
-    if (e.target.hasAttribute('data-tooltip')) {
-        tooltip.style.display = 'block';
-        tooltip.textContent = e.target.getAttribute('data-tooltip');
-        
-        // Offset slightly from the mouse cursor
-        tooltip.style.left = (e.clientX + 15) + 'px';
-        tooltip.style.top = (e.clientY + 15) + 'px';
-    } else {
-        tooltip.style.display = 'none';
-    }
-});
-	function calculateBill() {
-    // Inputs
-	const usage = parseFloat(document.getElementById('totalUsage').value);
-	const gen = parseFloat(document.getElementById('totalGen').value);
-	const afa = parseFloat(document.getElementById('rateAFA').value);
-	const cap = parseFloat(document.getElementById('rateCapacity').value);
-	const net = parseFloat(document.getElementById('rateNetwork').value);
-	const retail = parseFloat(document.getElementById('rateRetail').value);
-
-	// Logic: ICT (-0.005) if usage < 1000
-	const ictRate = usage < 1001 ? -0.005 : 0;
-	const ictTotal = usage * ictRate;
-
-	// Dynamic Tariff Selection
-	const tariff = (usage <= 1500) ? 0.2703 : 0.3703;
-	const baseRate = tariff + afa + cap + net + ictRate;
-	
-	// Tiered Logic
-	let tier1Usage = Math.min(usage, 600);
-	let tier2Usage = Math.max(0, usage - 600);
-	let subTotalNoST = tier1Usage * baseRate;
-	let subTotalST = (tier2Usage * baseRate) + (tier2Usage > 0 ? retail : 0);
-
-	const st = subTotalST * 0.08;
-	// KWTBB applied to the base rate components (excluding retail)
-	const kwtbb = (usage * (tariff + cap + net + ictRate)) * 0.016;
-	const currentTotal = subTotalNoST + subTotalST + st + kwtbb;
-	const creditNEM = (gen * (tariff + cap + net + ictRate));
-	const finalBill = currentTotal - creditNEM;
-
-	// Output
-	document.getElementById('resNoST').innerText = subTotalNoST.toFixed(2);
-	document.getElementById('resST').innerText = subTotalST.toFixed(2);
-	document.getElementById('resTax').innerText = st.toFixed(2);
-	document.getElementById('resKWTBB').innerText = kwtbb.toFixed(2);
-	document.getElementById('resNEM').innerText = creditNEM.toFixed(2);
-	document.getElementById('resCurrent').innerText = currentTotal.toFixed(2);
-	document.getElementById('resFinal').innerText = Math.max(0, finalBill).toFixed(2);
-	document.getElementById('appliedRates').innerHTML = 
-	`Rates Applied (RM /kWh): <br>Tariff: ${tariff}, AFA: ${afa}, Capacity: ${cap}, Network: ${net}, ICT: ${ictRate}`;
-	document.getElementById('results').style.display = 'block';
- }
+		const tooltip = document.getElementById('custom-tooltip');
+		document.addEventListener('mousemove', (e) => {
+		
+		// Check if the mouse is over an element that should have a tooltip
+		// For example, any element with a 'data-tooltip' attribute
+		if (e.target.hasAttribute('data-tooltip')) {
+			tooltip.style.display = 'block';
+			tooltip.textContent = e.target.getAttribute('data-tooltip');
+			
+			// Offset slightly from the mouse cursor
+			tooltip.style.left = (e.clientX + 15) + 'px';
+			tooltip.style.top = (e.clientY + 15) + 'px';
+		} else {
+			tooltip.style.display = 'none';
+		}
+		});
+		
+		function toggleSettings() {
+			const content = document.getElementById("settingsContent");
+			const btn = document.getElementById("toggleBtn");
+			
+			if (content.style.display === "block") {
+				content.style.display = "none";
+				btn.innerText = "⚙️ Advanced Setting (Rates Adjustment)";
+			} else {
+				content.style.display = "block";
+				btn.innerText = "⬆️ Hide Advanced Setting ⬆️";
+			}
+		}	
+			
+		function calculateBill() {
+			// 1. Get Primary Inputs
+			const usage = parseFloat(document.getElementById('totalUsage').value);
+			const gen = parseFloat(document.getElementById('totalGen').value);
+		
+			// 2. Get Advanced Settings
+			// Use .value to get the string, then check if it's empty
+			const manualAFA_val = document.getElementById('manualAFA').value;
+			const manualTariff_val = document.getElementById('manualTariff').value;
+			
+			// Logic: If empty string, use defaults; otherwise use the entered number
+			const afa = (manualAFA_val !== "") ? parseFloat(manualAFA_val) : parseFloat(document.getElementById('rateAFA').value);
+			const cap = parseFloat(document.getElementById('rateCapacity').value);
+			const net = parseFloat(document.getElementById('rateNetwork').value);
+			const retail = parseFloat(document.getElementById('rateRetail').value);
+			
+			// Dynamic Tariff Logic
+			const tariff = (manualTariff_val !== "") ? parseFloat(manualTariff_val) : (usage <= 1500 ? 0.2703 : 0.3703);
+		
+			// 3. ICT Logic
+			const ictRate = usage < 1001 ? -0.005 : 0;
+		
+			// 4. Calculations (Base components for KWTBB and Credit)
+			const baseRate = tariff + afa + cap + net + ictRate;
+			
+			let tier1Usage = Math.min(usage, 600);
+			let tier2Usage = Math.max(0, usage - 600);
+			
+			let subTotalNoST = tier1Usage * baseRate;
+			let subTotalST = (tier2Usage * baseRate) + (tier2Usage > 0 ? retail : 0);
+		
+			const st = subTotalST * 0.08;
+			// KWTBB is typically applied to energy/capacity/network/ict components
+			const kwtbb = (usage * (tariff + cap + net + ictRate)) * 0.016;
+			
+			const currentTotal = subTotalNoST + subTotalST + st + kwtbb;
+			
+			// NEM Credit: Using base components (excluding ST/KWTBB)
+			const creditNEM = (gen * (tariff + cap + net + ictRate));
+			const finalBill = currentTotal - creditNEM;
+		
+			// 5. Output
+			document.getElementById('resNoST').innerText = subTotalNoST.toFixed(2);
+			document.getElementById('resST').innerText = subTotalST.toFixed(2);
+			document.getElementById('resTax').innerText = st.toFixed(2);
+			document.getElementById('resKWTBB').innerText = kwtbb.toFixed(2);
+			document.getElementById('resNEM').innerText = creditNEM.toFixed(2);
+			document.getElementById('resCurrent').innerText = currentTotal.toFixed(2);
+			document.getElementById('resFinal').innerText = Math.max(0, finalBill).toFixed(2);
+			document.getElementById('appliedRates').innerHTML = 
+				`Rates Applied (RM/kWh):<br>Tariff: ${tariff.toFixed(4)}, AFA: ${afa.toFixed(4)}, Capacity: ${cap}, Network: ${net}, ICT: ${ictRate}`+
+				`<br>Retail Fixed Rate : RM ${retail.toFixed(2)}`;
+			document.getElementById('results').style.display = 'block';
+		}
+			
+		function resetSettings() {
+			// Clear manual overrides
+			document.getElementById('manualTariff').value = "";
+			document.getElementById('manualAFA').value = "";
+			
+			// Reset to default values
+			document.getElementById('rateCapacity').value = "0.0455";
+			document.getElementById('rateNetwork').value = "0.1285";
+			document.getElementById('rateRetail').value = "10.00";
+			
+			// Optional: Recalculate immediately after reset
+			calculateBill();
+		}
 	</script>
 </body>
+
+	<footer style="text-align: center; margin-top: 70px; padding-bottom: 5px; color: white;">
+		<small><i>👣 Built by 
+			<marquee direction="left" scrollamount="2" style="width: 40px; vertical-align: bottom; display: inline-block;">
+				<a :href="'mailto:' + 'ccchuah' + '@' + 'yahoo.com'" style="color: inherit; text-decoration: none; border-bottom: 1px dashed grey;">
+				CCC</a></marquee>| 2026 Summer 👣</i></small>
+	</footer>
 </html>

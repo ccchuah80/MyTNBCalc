@@ -227,8 +227,10 @@
 			const afa = (manualAFA_val !== "") ? parseFloat(manualAFA_val) : parseFloat(document.getElementById('rateAFA').value);
 			const cap = parseFloat(document.getElementById('rateCapacity').value);
 			const net = parseFloat(document.getElementById('rateNetwork').value);
-			const retail = parseFloat(document.getElementById('rateRetail').value);
-			
+
+			let retailInput = parseFloat(document.getElementById('rateRetail').value);			
+			const retail = (usage > 600) ? retailInput : 0;
+						
 			// Dynamic Tariff Logic
 			const tariff = (manualTariff_val !== "") ? parseFloat(manualTariff_val) : (usage <= 1500 ? 0.2703 : 0.3703);
 		
@@ -242,7 +244,7 @@
 			let tier2Usage = Math.max(0, usage - 600);
 			
 			let subTotalNoST = tier1Usage * baseRate;
-			let subTotalST = (tier2Usage * baseRate) + (tier2Usage > 0 ? retail : 10);
+			let subTotalST = (tier2Usage * baseRate) + (tier2Usage > 0 ? retail : 0);
 		
 			const st = subTotalST * 0.08;
 			// KWTBB is typically applied to energy/capacity/network/ict components

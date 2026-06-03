@@ -25,9 +25,9 @@
 			box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 			max-width: 680px;
 			width: 98%;
-		}
+			}
 
-		h2 { text-align: center; color: #2c3e50; }
+		h2 {text-align: center; color: #2c3e50;}
 
 		.grid-inputs { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 8px; }
 		.input-group label { display: block; font-size: 0.8rem; margin-bottom: 4px; color: #555; }
@@ -37,28 +37,21 @@
 			width: 100%; padding: 8px; border: 1px solid #ddd; 
 			border-radius: 8px; box-sizing: border-box; 
 			-moz-appearance: textfield; 
-		}
-		input, select, textarea {
-		font-size: 14px;
-		}
+			}
+		input, select, textarea {font-size: 14px;}
 		input[type=number]::-webkit-inner-spin-button, 
 		input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 
-		.settings-panel { margin-bottom: 10px; background: #99ccff;}
-		
-		
+		.settings-panel { margin-bottom: 10px; background: #99ccff;}		
 		.collapsible { background: #ff0066; cursor: pointer; padding: 10px; width: 100%; border: none; text-center: left; border-radius: 10px; font-weight: bold; }
-		.collapsible:hover {
-		background: #660033; /* Optional: adds a nice hover effect */
-		}
-		.Calcbtn:hover {
-		background: #006600; /* Optional: adds a nice hover effect */
-		}		.content { display: none; padding: 10px; border: 1px solid #ddd; border-top: none; }
+		.collapsible:hover { background: #660033;}
+		.Calcbtn:hover {background: #006600;}
+		.content { display: none; padding: 10px; border: 1px solid #ddd; border-top: none; }
 
 		button { 
 			background: #00cc00; color: white; padding: 15px; border: none; 
 			border-radius: 10px; cursor: pointer; width: 100%; font-size: 1.4rem; font-weight: bold;
-		}
+			}
 		#results { margin-top: 10px; margin-bottom: 10px; padding: 10px; background: #e0f2f1; border-radius: 15px; }
 		.result-table { width: 100%; border-collapse: collapse; margin-top: 8px; }
 		.result-table td { padding: 6px 0; }
@@ -66,51 +59,47 @@
 		.rate-display { font-style: italic; font-size: 0.75rem; color: #666; margin-top: 12px; border-top: 1px solid #ccc; padding-top: 5px; }
 		.nem-credit { color: red; font-weight: bold; }
 		.tooltip {
-		position: fixed;
-		background: #6cf;
-		color: #fff;
-		padding: 5px 10px;
-		border-radius: 4px;
-		font-size: 12px;
-		display: none; /* Hidden by default */
-		pointer-events: none; /* Mouse ignores the tooltip */
-		z-index: 1000;
-		}
-		
+			position: fixed;
+			background: #960;
+			color: #fff;
+			padding: 5px 10px;
+			border-radius: 4px;
+			font-size: 12px;
+			display: none; /* Hidden by default */
+			pointer-events: none; /* Mouse ignores the tooltip */
+			z-index: 1000;
+			}
+			
 		.reset-btn {
-		background: #ffff99; 
-		color: red;
-		font-size: 0.9rem; 
-		padding: 8px 15px; /* Smaller padding */
-		border: none; 
-		border-radius: 8px; 
-		cursor: pointer; 
-		width: auto; /* Button only as wide as the text */
-		display: inline-block; /* Helps with centering */
-		}	
-		.reset-btn:hover {
-		background: #ff9900; /* Optional: adds a nice hover effect */
-		}
+			background: #ffff99; 
+			color: red;
+			font-size: 0.9rem; 
+			padding: 8px 15px; /* Smaller padding */
+			border: none; 
+			border-radius: 8px; 
+			cursor: pointer; 
+			width: auto; /* Button only as wide as the text */
+			display: inline-block; /* Helps with centering */
+			}
+		.reset-btn:hover { background: #ff9900; }
 		.recalc-btn {
-		font-size: 0.9rem; 
-		padding: 8px 15px; /* Smaller padding */
-		border-radius: 8px; 
-		width: auto; /* Button only as wide as the text */
-		display: inline-block; /* Helps with centering */
-		}	
-		.recalc-btn:hover {
-		background: #006600; /* Optional: adds a nice hover effect */
-		}
+			font-size: 0.9rem; 
+			padding: 8px 15px; /* Smaller padding */
+			border-radius: 8px; 
+			width: auto; /* Button only as wide as the text */
+			display: inline-block; /* Helps with centering */
+			}	
+		.recalc-btn:hover { background: #006600;}
 		
 		@media (max-width: 600px) {
 		.grid-inputs {
 			grid-template-columns: 1fr 1fr; /* Force 2 column on mobile */
-		}
+			}
 		
 		.main-wrapper {
 			padding: 10px; /* Reduce padding for smaller screens */
 			border-radius: 10; /* Remove rounded corners for full-width look */
-		}
+			}
 		
 		button {
 			font-size: 1.2rem; /* Make button text slightly smaller to fit */
@@ -131,21 +120,22 @@
 		<div class="grid-inputs">
 			<div class="input-group"><label>Total Usage (kWh)</label><input type="number" id="totalUsage" value="1398"></div>
 			<div class="input-group"><label>Solar Generation (kWh)</label><input type="number" id="totalGen" value="526"></div>
-			<div class="input-group"><label data-tooltip="AFA (Automatic Fuel Adjustment) is reviewed and announced monthly by the Energy Commission (Suruhanjaya Tenaga)"> *AFA (RM/kWh)</label>
+			<div class="input-group"><label data-tooltip="AFA (Automatic Fuel Adjustment) is reviewed and announced monthly by the Energy Commission (Suruhanjaya Tenaga). Excluded if Usage <601kWh"> *AFA (RM/kWh)</label>
 				<select id="rateAFA" style="border-radius: 10px; height: 38px;">
-					<option value="-0.0145">August 2025 (-0.0145)</option>
-					<option value="-0.0110">September 2025 (-0.0110)</option>
-					<option value="-0.0650">October 2025 (-0.0650)</option>
-					<option value="-0.0891">November 2025 (-0.0891)</option>
-					<option value="-0.0642">December 2025 (-0.0642)</option>
-					<option value="-0.0499">January 2026 (-0.0499)</option>
-					<option value="-0.0277">February 2026 (-0.0277)</option>
-					<option value="-0.0215">March 2026 (-0.0215)</option>
-					<option value="-0.0047">April 2026 (-0.0047)</option>
-					<option value="0.0138"selected >May 2026 (+0.0138)</option>
-					<option value="0.0292">June 2026 (+0.0292)</option>
-					<option value="0.0022">July 2026 (+0.0022)</option>
-					<option value="0.0393">August 2026 (+0.0393)</option>
+					<option value="-0.0145">Aug 2025 (-0.0145)</option>
+					<option value="-0.0110">Sept 2025 (-0.0110)</option>
+					<option value="-0.0650">Oct 2025 (-0.0650)</option>
+					<option value="-0.0891">Nov 2025 (-0.0891)</option>
+					<option value="-0.0642">Dec 2025 (-0.0642)</option>
+					<option value="-0.0499">Jan 2026 (-0.0499)</option>
+					<option value="-0.0277">Feb 2026 (-0.0277)</option>
+					<option value="-0.0215">Mar 2026 (-0.0215)</option>
+					<option value="-0.0047">Apr 2026 (-0.0047)</option>
+					<option value="0.0138">May 2026 (+0.0138)</option>
+					<option value="0.0259"selected >Jun 2026 (+0.0259)</option>
+					<option value="0.0489">Jul 2026 (+0.0489) est.</option>
+					<option value="0.0708">Aug 2026 (+0.0708) est.</option>
+					<option value="0.0615">Sep 2026 (+0.0615) est.</option>
 				</select>
 			</div>
 		</div>
@@ -156,7 +146,7 @@
 				<tr><td>0-600 kWh (No ST):</td><td class="text-right">RM <span id="resNoST"></span></td></tr>
 				<tr><td>&gt;600 kWh (With ST):</td><td class="text-right">RM <span id="resST"></span></td></tr>
 				<tr><td>Service Tax (8% on &gt;600):</td><td class="text-right">RM <span id="resTax"></span></td></tr>
-				<tr><td><label data-tooltip="KWTBB = 1.6% * Total Usage * (Tariff + Capacity + Network + ICT). Exempted if Usage <301kWh">KWTBB (1.6%):</label></td><td class="text-right">RM <span id="resKWTBB"></span></td></tr>
+				<tr><td><label data-tooltip="KWTBB = 1.6% * Total Usage * (Tariff + Capacity + Network + ICT). Exempted if Usage <301kWh">* KWTBB (1.6%):</label></td><td class="text-right">RM <span id="resKWTBB"></span></td></tr>
 				<tr style="border-top: 2px solid #333;"><td><strong>Current Total:</strong></td><td class="text-right"><strong>RM <span id="resCurrent"></span></strong></td></tr>
 				<tr><td>Credit NEM:</td><td class="text-right nem-credit">(RM <span id="resNEM"></span>)</td></tr>
 				<tr style="font-size: 1.2em; color: #11AA55;"><td><strong>Final Bill:</strong></td><td class="text-right"><strong>RM <span id="resFinal"></span></strong></td></tr>
@@ -172,7 +162,7 @@
 					<div class="input-group"><label>Override AFA (RM/kWh)</label><input type="number" id="manualAFA" placeholder="Leave empty for default"></div>
 					<div class="input-group"><label>Capacity Charge (RM/kWh)</label><input type="number" id="rateCapacity" value="0.0455"></div>
 					<div class="input-group"><label>Network Charge (RM/kWh)</label><input type="number" id="rateNetwork" value="0.1285"></div>
-					<div class="input-group"><label>Retail Fixed Rate (RM)</label><input type="number" id="rateRetail" value="10.00"></div>
+					<div class="input-group"><label data-tooltip="Retail waived for Usage <601kWh">* Retail Fixed Rate (RM)</label><input type="number" id="rateRetail" value="10.00"></div>
 				</div>
 				<div style="text-align: center; margin-top: 10px;">
 					<button onclick="calculateBill()" class="recalc-btn">Calculate</button>
@@ -223,11 +213,19 @@
 			const manualAFA_val = document.getElementById('manualAFA').value;
 			const manualTariff_val = document.getElementById('manualTariff').value;
 			
-			// Logic: If empty string, use defaults; otherwise use the entered number
-			const afa = (manualAFA_val !== "") ? parseFloat(manualAFA_val) : parseFloat(document.getElementById('rateAFA').value);
+			// Updated AFA Logic: If usage <= 600, AFA is 0. 
+			// Otherwise, use manual input if provided, or default rate.
+			let afa;
+			if (usage <= 600) {
+				afa = 0;
+			} else {
+				afa = (manualAFA_val !== "") ? parseFloat(manualAFA_val) : parseFloat(document.getElementById('rateAFA').value);
+			}
+			
 			const cap = parseFloat(document.getElementById('rateCapacity').value);
 			const net = parseFloat(document.getElementById('rateNetwork').value);
 
+			// Logic: Retail charge waived for <600 kWh usage
 			let retailInput = parseFloat(document.getElementById('rateRetail').value);			
 			const retail = (usage > 600) ? retailInput : 0;
 						

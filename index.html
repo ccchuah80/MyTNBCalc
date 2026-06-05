@@ -137,7 +137,7 @@
 					<option value="0.0708">Aug 2026 (+0.0708) est.</option>
 					<option value="0.0615">Sep 2026 (+0.0615) est.</option>
 				</select>
-				<label><i>Source: <a href="www.mytnb.com.my/tariff">www.mytnb.com.my/tariff</a></i></label>
+				<label><i>Source: <a href="https://www.mytnb.com.my/tariff/" target="_blank">www.mytnb.com.my/tariff</a></i></label>
 			</div>
 		</div>
 		<button class="Calcbtn" onclick="calculateBill()">Calculate Final Bill</button>
@@ -275,7 +275,8 @@
 			const currentTotal = subTotalNoST + subTotalST + st + kwtbb;
 			
 			// NEM Credit: Using base components (excluding ST/KWTBB)
-			const creditNEM = (gen * (tariff + cap + net + ictRate));
+			const NEMRate = tariff + cap + net + ictRate;
+			const creditNEM = (gen * NEMRate);
 			const finalBill = currentTotal - creditNEM;
 		
 			// 5. Output
@@ -287,8 +288,9 @@
 			document.getElementById('resCurrent').innerText = currentTotal.toFixed(2);
 			document.getElementById('resFinal').innerText = Math.max(0, finalBill).toFixed(2);
 			document.getElementById('appliedRates').innerHTML = 
-				`Rates Applied (RM/kWh):<br>Tariff: ${tariff.toFixed(4)}, AFA: ${afa.toFixed(4)}, Capacity: ${cap}, Network: ${net}, ICT: ${ictRate}`+
-				`<br>Retail Fixed Rate : RM ${retail.toFixed(2)}`;
+				`Usage Rates Applied : RM ${baseRate.toFixed(4)} /kWh:<br>(Tariff: ${tariff.toFixed(4)}, AFA: ${afa.toFixed(4)}, Capacity: ${cap}, Network: ${net}, ICT: ${ictRate.toFixed(3)})`+
+				`<br>NEM Rates Applied : RM ${(NEMRate).toFixed(4)} /kWh`+
+				`, Retail Fixed Rate : RM ${retail.toFixed(2)}`;
 			document.getElementById('results').style.display = 'block';
 		}
 			

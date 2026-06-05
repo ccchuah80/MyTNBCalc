@@ -137,11 +137,12 @@
 					<option value="0.0708">Aug 2026 (+0.0708) est.</option>
 					<option value="0.0615">Sep 2026 (+0.0615) est.</option>
 				</select>
+				<label><i>Source: <a href="www.mytnb.com.my/tariff">www.mytnb.com.my/tariff</a></i></label>
 			</div>
 		</div>
 		<button class="Calcbtn" onclick="calculateBill()">Calculate Final Bill</button>
 		<div id="results" style="display:none;">
-			<h3>Bill Summary</h3>
+			<h3>Bill Summary:</h3>
 			<table class="result-table">
 				<tr><td>0-600 kWh (No ST):</td><td class="text-right">RM <span id="resNoST"></span></td></tr>
 				<tr><td>&gt;600 kWh (With ST):</td><td class="text-right">RM <span id="resST"></span></td></tr>
@@ -233,8 +234,31 @@
 			const tariff = (manualTariff_val !== "") ? parseFloat(manualTariff_val) : (usage <= 1500 ? 0.2703 : 0.3703);
 		
 			// 3. ICT Logic
-			const ictRate = usage < 1001 ? -0.005 : 0;
-		
+
+			const getIctRate = (usage) => {
+			  if (usage <= 0) return 0;
+			  if (usage <= 200) return -0.250;
+			  if (usage <= 250) return -0.245;
+			  if (usage <= 300) return -0.225;
+			  if (usage <= 350) return -0.210;
+			  if (usage <= 400) return -0.170;
+			  if (usage <= 450) return -0.145;
+			  if (usage <= 500) return -0.120;
+			  if (usage <= 550) return -0.105;
+			  if (usage <= 600) return -0.090;
+			  if (usage <= 650) return -0.075;
+			  if (usage <= 700) return -0.055;
+			  if (usage <= 750) return -0.045;
+			  if (usage <= 800) return -0.040;
+			  if (usage <= 850) return -0.025;
+			  if (usage <= 900) return -0.010;
+			  if (usage <= 1000) return -0.005;
+			  
+			  return 0; // Default for usage > 1000
+			};
+			
+			const ictRate = getIctRate(usage);
+			
 			// 4. Calculations (Base components for KWTBB and Credit)
 			const baseRate = tariff + afa + cap + net + ictRate;
 			
@@ -277,7 +301,7 @@
 			document.getElementById('rateCapacity').value = "0.0455";
 			document.getElementById('rateNetwork').value = "0.1285";
 			document.getElementById('rateRetail').value = "10.00";
-			
+
 			// Optional: Recalculate immediately after reset
 			calculateBill();
 		}

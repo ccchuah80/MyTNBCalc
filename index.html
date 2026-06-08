@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TNB Electricity Bill Calculator by CCC</title>
-    <style>
+	<title>TNB Electricity Bill Calculator by CCC</title>
+	<style>
 		body {
 			background: linear-gradient(-45deg, #0100ff 10%, #0fffff 90%) fixed;
 			min-height: 100vh;
@@ -42,7 +42,7 @@
 		input[type=number]::-webkit-inner-spin-button, 
 		input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 
-		.settings-panel { margin-bottom: 10px; background: #99ccff;}		
+		.settings-panel { margin-bottom: 10px; border-radius: 10px; background: #99ccff;}		
 		.collapsible { background: #ff0066; cursor: pointer; padding: 10px; width: 100%; border: none; text-center: left; border-radius: 10px; font-weight: bold; }
 		.collapsible:hover { background: #660033;}
 		.Calcbtn:hover {background: #006600;}
@@ -52,7 +52,7 @@
 			background: #00cc00; color: white; padding: 15px; border: none; 
 			border-radius: 10px; cursor: pointer; width: 100%; font-size: 1.4rem; font-weight: bold;
 			}
-		#results { margin-top: 10px; margin-bottom: 10px; padding: 10px; background: #e0f2f1; border-radius: 15px; }
+		#results { margin-top: 10px; font-size: 0.9rem; margin-bottom: 10px; padding: 10px; background: #e0f2f1; border-radius: 10px; }
 		.result-table { width: 100%; border-collapse: collapse; margin-top: 8px; }
 		.result-table td { padding: 6px 0; }
 		.text-right { text-align: right; }
@@ -63,7 +63,7 @@
 			background: #960;
 			color: #fff;
 			padding: 5px 10px;
-			border-radius: 4px;
+			border-radius: 8px;
 			font-size: 12px;
 			display: none; /* Hidden by default */
 			pointer-events: none; /* Mouse ignores the tooltip */
@@ -119,7 +119,7 @@
 		</h2>
 		<div class="grid-inputs">
 			<div class="input-group"><label>Total Usage (kWh)</label><input type="number" id="totalUsage" value="1398"></div>
-			<div class="input-group"><label>Solar Generation (kWh)</label><input type="number" id="totalGen" value="526"></div>
+			<div class="input-group"><label data-tooltip="This is NOT your total Solar Generation! It is Your Total Solar Generation - Solar Being used (during daytime)">* Excess Generation (kWh)</label><input type="number" id="totalGen" value="526"></div>
 			<div class="input-group"><label data-tooltip="AFA (Automatic Fuel Adjustment) is reviewed and announced monthly by the Energy Commission (Suruhanjaya Tenaga). Excluded if Usage <601kWh"> *AFA (RM/kWh)</label>
 				<select id="rateAFA" style="border-radius: 10px; height: 38px;">
 					<option value="-0.0145">Aug 2025 (-0.0145)</option>
@@ -148,13 +148,12 @@
 				<tr><td>&gt;600 kWh (With ST):</td><td class="text-right">RM <span id="resST"></span></td></tr>
 				<tr><td>Service Tax (8% on &gt;600):</td><td class="text-right">RM <span id="resTax"></span></td></tr>
 				<tr><td><label data-tooltip="KWTBB = 1.6% * Total Usage * (Tariff + Capacity + Network + ICT). Exempted if Usage <301kWh">* KWTBB (1.6%):</label></td><td class="text-right">RM <span id="resKWTBB"></span></td></tr>
-				<tr style="border-top: 2px solid #333;"><td><strong>Current Total:</strong></td><td class="text-right"><strong>RM <span id="resCurrent"></span></strong></td></tr>
+				<tr style="border-top: 1px solid #ccc;"><td><strong>Current Total:</strong></td><td class="text-right"><strong>RM <span id="resCurrent"></span></strong></td></tr>
 				<tr><td>Credit NEM:</td><td class="text-right nem-credit">(RM <span id="resNEM"></span>)</td></tr>
-				<tr style="font-size: 1.2em; color: #11AA55;"><td><strong>Final Bill:</strong></td><td class="text-right"><strong>RM <span id="resFinal"></span></strong></td></tr>
+				<tr style="font-size: 1.2em; color: #11AA55;border-top: 1px solid #333;"><td><strong>Final Bill:</strong></td><td class="text-right"><strong>RM <span id="resFinal"></span></strong></td></tr>
 			</table>
 			<div id="appliedRates" class="rate-display"></div>
 		</div>
-		
 		<div class="settings-panel">
 			<button id="toggleBtn" class="collapsible" style="font-size: 1em" onclick="toggleSettings()">⚙️ Advanced Setting (Rates Adjustment)</button>
 			<div id="settingsContent" class="content">
@@ -171,9 +170,9 @@
 				</div>
 			</div>
 		</div>
-    </div>
+	</div>
 
-	<script>		
+	<script>
 		const tooltip = document.getElementById('custom-tooltip');
 		document.addEventListener('mousemove', (e) => {
 		
@@ -290,7 +289,8 @@
 			document.getElementById('appliedRates').innerHTML = 
 				`Usage Rates Applied : RM ${baseRate.toFixed(4)} /kWh:<br>(Tariff: ${tariff.toFixed(4)}, AFA: ${afa.toFixed(4)}, Capacity: ${cap}, Network: ${net}, ICT: ${ictRate.toFixed(3)})`+
 				`<br>NEM Rates Applied : RM ${(NEMRate).toFixed(4)} /kWh`+
-				`, Retail Fixed Rate : RM ${retail.toFixed(2)}`;
+				`; Retail Fixed Rate : RM ${retail.toFixed(2)}`+
+				`<br> Final Bill = (${baseRate.toFixed(4)}x${usage.toFixed(0)}) - (${(NEMRate).toFixed(4)}x${(gen).toFixed(0)}) + (${retail.toFixed(2)}) + Tax (${(st).toFixed(2)}+${(kwtbb).toFixed(2)})`;
 			document.getElementById('results').style.display = 'block';
 		}
 			
@@ -313,7 +313,7 @@
 <footer style="text-align: center; margin-top: 50px; padding-bottom: 5px; color: white;">
 	<small><i>⚡️ Built by 
 		<a href="mailto:ccchuah@yahoo.com" style="color: inherit;">CCC</a> 
-		| 2026 Spring ⚡️
+		| 2026 Summer ⚡️
 	</i></small>
 </footer>
 </html>
